@@ -24,8 +24,10 @@ def run_game():
         game_state.window_settings["title"]
     )
 
+    set_config_flags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT)
     set_target_fps(game_state.window_settings["target_fps"])
     toggle_fullscreen()
+
     timer = 0.0
 
     while not window_should_close():
@@ -33,11 +35,13 @@ def run_game():
         # root_object.global_camera.camera_3d.fovy = (abs(math.sin(timer) * 40)) + 40
 
         begin_drawing()
+        clear_background(BLACK)
+
         begin_mode3d(root_object.global_camera.camera_3d)
 
         root_object._on_render_3d()
+        draw_grid(128, 4)
 
-        clear_background(BLACK)
         end_mode3d()
 
         root_object._on_render()

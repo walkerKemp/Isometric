@@ -11,18 +11,24 @@ class IsometricGrid(EngineObject):
         self.tile_size = 4
         self._tile_size_vector3 = Vector3(self.tile_size, self.tile_size, self.tile_size)
 
-        for i in range(10):
-            for j in range(10):
-                self.cube_data.append(
-                    (
-                        Vector3(
-                            i * self.tile_size,
-                            0,
-                            j * self.tile_size,
-                        ),
-                        Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
-                    )
-                )
+        for i in range(100):
+            for j in range(100):
+                position = Vector3(i * self.tile_size, 0, j * self.tile_size)
+                color = Color(*[random.randint(0, 255) for _ in range(3)], 255)
+                self.cube_data.append((position, color))
+
+        # for i in range(100):
+        #     for j in range(10):
+        #         self.cube_data.append(
+        #             (
+        #                 Vector3(
+        #                     i * self.tile_size,
+        #                     0,
+        #                     j * self.tile_size,
+        #                 ),
+        #                 Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
+        #             )
+        #         )
 
     def on_render_3d(self):
         for cube_data in self.cube_data:
