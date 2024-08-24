@@ -16,7 +16,10 @@ class EngineObject:
     def on_render(self):
         return None
     
-    def on_update(self):
+    def on_render_3d(self):
+        return None
+    
+    def on_update(self, delta_time: float):
         return None
 
     def _on_render(self):
@@ -25,11 +28,17 @@ class EngineObject:
         for child in self.children:
             child._on_render()
 
-    def _on_update(self):
-        self.on_update()
+    def _on_render_3d(self):
+        self.on_render_3d()
 
         for child in self.children:
-            child._on_update()
+            child._on_render_3d()
+
+    def _on_update(self, delta_time: float):
+        self.on_update(delta_time)
+
+        for child in self.children:
+            child._on_update(delta_time)
 
     # TODO: implement
     def find(self, _id: str) -> Optional['EngineObject']:
