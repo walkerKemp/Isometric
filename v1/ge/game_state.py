@@ -4,8 +4,8 @@ from ge.input import InputManager
 class GameState:
     def __init__(self):
         self.window_settings = {
-            "width": 1920,
-            "height": 1080,
+            "width": 160 * 8,
+            "height": 90 * 8,
             "title": "Isometric",
             "target_fps": 144,
         }
