@@ -1,5 +1,6 @@
 from raylibpy import *
 from ge.engine_node import EngineNode, AnimationNode, PlayerNode
+from ge.input import Input
 
 def run_game():
     window_data = {
@@ -7,7 +8,8 @@ def run_game():
         "height": 1080,
         "title": "Isometric",
         "target-fps": 144,
-        "debug": False
+        "debug": False,
+        "input": Input()
     }
 
     init_window(
@@ -23,7 +25,7 @@ def run_game():
 
 
     root_node = EngineNode(window_data, None)
-    player_node = PlayerNode(window_data, root_node, position=Vector2(400, 400))
+    player_node = PlayerNode(window_data, root_node, position=Vector2(400, 400), default_physics=True)
     animation_node = AnimationNode(window_data, root_node, "assets/idle")
     animation_node.lock_node_position(player_node)
 

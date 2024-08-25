@@ -1,6 +1,8 @@
+from ge.aston_math import *
 from typing import Optional, List, Dict
 from raylibpy import *
 import os
+
 
 class EngineNode:
     # if parent is none than this is the root object, all children will have a parent
@@ -11,10 +13,14 @@ class EngineNode:
         self.game_state  = game_state
 
         self.position: Vector2 = _kwargs.get("position", Vector2())
+        self.desired_position: Vector2 = self.position
+
         self.velocity: Vector2 = _kwargs.get("velocity", Vector2())
 
-        self.default_physics = False
+        self.default_physics = _kwargs.get("default_physics", False)
         self._position_lock_target: Optional['EngineNode'] = None
+
+        self.approach_speed = _kwargs.get("approach_speed", 0.3)
 
     def add_node(self, node: 'EngineNode') -> 'EngineNode':
         self.children[self._children_pointer] = node
@@ -44,7 +50,7 @@ class EngineNode:
         self.on_update(delta_time)
 
         if self.default_physics:
-            self.position += self.velocity * delta_time
+            pass
 
         if self._position_lock_target != None:
             self.position = self._position_lock_target.position
@@ -55,9 +61,14 @@ class EngineNode:
     def lock_node_position(self, other: 'EngineNode'):
         self._position_lock_target = other
 
+
 class PlayerNode(EngineNode):
     def __init__(self, game_state: dict['str', 'str'], parent: Optional['EngineNode'], *_args, **_kwargs):
         super().__init__(game_state, parent, *_args, **_kwargs)
+
+    def on_update(self, delta_time: float):
+        movement = self.game_state["input"].get_movement_input() * delta_time * 100.0
+        self.velocity = movement * self.approach_speed
 
 class AnimationNode(EngineNode):
     def __init__(self, game_state: dict['str', 'str'], parent: Optional['EngineNode'], animation_folder: str, *_args, **_kwargs):
