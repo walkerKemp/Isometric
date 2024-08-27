@@ -13,8 +13,8 @@ class EngineCamera(EngineObject):
             Vector3(0.0, 0.0, 0.0),
             Vector3(0.0, 1.0, 0.0),
             90.0,
-            CameraProjection.CAMERA_ORTHOGRAPHIC
-            # CameraProjection.CAMERA_PERSPECTIVE
+            # CameraProjection.CAMERA_ORTHOGRAPHIC
+            CameraProjection.CAMERA_PERSPECTIVE
         )
 
         self.camera_2d = Camera2D(

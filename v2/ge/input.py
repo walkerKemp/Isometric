@@ -15,4 +15,4 @@ class Input:
         up = 1.0 if is_key_down(self.key_bindings["player-up"]) else 0.0
         down = 1.0 if is_key_down(self.key_bindings["player-down"]) else 0.0
 
-        return Vector2(right - left, up - down)
+        return Vector2(right - left, down - up)

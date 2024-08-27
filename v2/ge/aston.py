@@ -1,5 +1,5 @@
 from raylibpy import *
-from ge.engine_node import EngineNode, AnimationNode, PlayerNode
+from ge.engine_node import EngineNode, BackgroundNode, PlayerNode, CameraNode
 from ge.input import Input
 
 def run_game():
@@ -21,15 +21,16 @@ def run_game():
     set_config_flags(FLAG_VSYNC_HINT)
     toggle_fullscreen()
 
-    global_camera = Camera2D(Vector2(), Vector2(), 0.0, 1.0)
-
+    global_camera = Camera2D(Vector2(window_data["width"] / 2, window_data["height"] / 2), Vector2(), 0.0, 1.0)
 
     root_node = EngineNode(window_data, None)
-    player_node = PlayerNode(window_data, root_node, position=Vector2(400, 400), default_physics=True)
-    animation_node = AnimationNode(window_data, root_node, "assets/idle")
-    animation_node.lock_node_position(player_node)
+    camera_node = CameraNode(window_data, root_node, camera=global_camera)
+    background_node = BackgroundNode(window_data, root_node)
+    player_node = PlayerNode(window_data, root_node, size=Vector2(32, 32))
 
-    root_node.add_node(player_node.add_node(animation_node))
+    camera_node.lock_on_target = player_node
+
+    root_node.with_node(camera_node).with_node(background_node).with_node(player_node)
 
     while not window_should_close():
         frame_time = get_frame_time()
@@ -37,12 +38,14 @@ def run_game():
 
         begin_drawing()
         begin_mode2d(global_camera)
-        clear_background(WHITE)
+        clear_background(BLACK)
 
-        root_node._on_render()
+        root_node._on_render(global_camera)
+        end_mode2d()
+
+        root_node._on_render_ui()
 
         draw_fps(4, 4)
-        end_mode2d()
         end_drawing()
 
     close_window()
